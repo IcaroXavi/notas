@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 void main() {
@@ -8,7 +9,7 @@ List<double> notas = [];
 
 void menu() {
   print(
-    "Menu Principal\n\n1 - Adiconar nota\n2 - Consultar notas\n3 - Excluir Nota\n4 - Sair",
+    "\nMenu Principal\n\n1 - Adiconar nota\n2 - Consultar notas\n3 - Excluir Nota\n4 - Sair",
   );
   String? opcao = stdin.readLineSync();
   switch (opcao) {
@@ -42,10 +43,54 @@ void adiconar() {
   }
 }
 
-void consultar() {}
+void consultar() {
+  if (notas.isEmpty) {
+    print(
+      "Nenhuma nota encontrada! Digite 1 para voltar ao menu inicial ou qualquer outra tecla para sair:",
+    );
+    String? opcao = stdin.readLineSync();
+    if (opcao == "1") {
+      menu();
+    } else {
+      sair();
+    }
+  } else {
+    print("\nNotas:\n");
+    for (var i = 0; i < notas.length; i++) {
+      print(notas[i]);
+    }
+    print(
+      "\nDigite 1 para voltar ao menu inicial ou qualquer outra tecla para sair:",
+    );
+    String? opcao = stdin.readLineSync();
+    if (opcao == "1") {
+      menu();
+    } else {
+      sair();
+    }
+  }
+}
 
-void excluir() {}
+void excluir() {
+  print("Digite o valor correspondente a nota a ser excluída:");
+  List<int> opcoes = [];
+  for (var i = 0; i < notas.length; i++) {
+    int index = i + 1;
+    print("Nota $index: ${notas[i]}");
+    opcoes.add(index);
+  }
+  int? opcao = int.tryParse(stdin.readLineSync() ?? "");
+  if (opcoes.contains(opcao)) {
+    notas.removeAt(opcao! - 1);
+  } else {
+    print("Opção inválida.");
+    excluir();
+  }
+
+  menu();
+}
 
 void sair() {
-  print("Até breve!");
+  print("Desconectando...");
+  Timer(Duration(seconds: 1), () {});
 }
