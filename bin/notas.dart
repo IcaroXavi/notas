@@ -72,7 +72,7 @@ void consultar() {
 }
 
 void excluir() {
-  print("Digite o valor correspondente a nota a ser excluída:");
+  print("\nDigite o valor correspondente a nota a ser excluída:\n");
   List<int> opcoes = [];
   for (var i = 0; i < notas.length; i++) {
     int index = i + 1;
