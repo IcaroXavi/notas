@@ -5,7 +5,8 @@ void main() {
   menu();
 }
 
-List<double> notas = [];
+//List<double> notas = [];
+List<Map<String, dynamic>> notas = [];
 
 void menu() {
   print(
@@ -29,10 +30,21 @@ void menu() {
 }
 
 void adiconar() {
-  print("Digite a nota a ser adicionada:");
-  double? nota = double.tryParse(stdin.readLineSync() ?? "");
-  notas.add(nota!);
-  print(
+  print("Digite o nome do(a) aluno(a):");
+  String? nome = stdin.readLineSync();
+  print("Digite a nota do(a) aluno(a):");
+  int? nota = int.parse(stdin.readLineSync()!);
+  print("Digite a nota do(a) aluno(a):");
+  int? nota1 = int.parse(stdin.readLineSync()!);
+  Map<String, dynamic> nomeNota = {'nome': nome, 'nota': nota, 'nota1': nota1};
+  notas.add(nomeNota);
+  menu();
+
+  //print("Digite a nota a ser adicionada:");
+  //double? nota = double.tryParse(stdin.readLineSync() ?? "");
+  //notas.add(nota!);
+
+  /*print(
     "Nota $nota adicionada! Digite 1 para adicionar mais notas ou qualquer outra tecla para retorar ao menu principal:",
   );
   String? opcao = stdin.readLineSync();
@@ -40,7 +52,7 @@ void adiconar() {
     adiconar();
   } else {
     menu();
-  }
+  }*/
 }
 
 void consultar() {
@@ -81,7 +93,7 @@ void excluir() {
   }
   int? opcao = int.tryParse(stdin.readLineSync() ?? "");
   if (opcoes.contains(opcao)) {
-    notas.removeAt(opcao! - 1);
+    // notas.removeAt(opcao! - 1);
   } else {
     print("Opção inválida.");
     excluir();
