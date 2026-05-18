@@ -5,54 +5,78 @@ void main() {
   menu();
 }
 
-//List<double> notas = [];
-List<Map<String, dynamic>> notas = [];
+Map<String, List<int>> notas = {};
 
 void menu() {
   print(
-    "\nMenu Principal\n\n1 - Adiconar nota\n2 - Consultar notas\n3 - Excluir Nota\n4 - Sair",
+    "\nMenu Principal\n\n1 - Incluir Aluno\n2 - Adiconar nota\n3 - Consultar alunos e notas\n4 - Excluir Nota\n5 - Sair",
   );
   String? opcao = stdin.readLineSync();
   switch (opcao) {
     case "1":
-      adiconar();
+      incluir();
       break;
     case "2":
-      consultar();
+      adiconar();
       break;
     case "3":
-      excluir();
+      consultar();
       break;
     case "4":
+      excluir();
+      break;
+    case "5":
       sair();
       break;
   }
 }
 
-void adiconar() {
-  print("Digite o nome do(a) aluno(a):");
+void incluir() {
+  print("\nDigite o nome do(a) aluno(a):");
   String? nome = stdin.readLineSync();
-  print("Digite a nota do(a) aluno(a):");
-  int? nota = int.parse(stdin.readLineSync()!);
-  print("Digite a nota do(a) aluno(a):");
-  int? nota1 = int.parse(stdin.readLineSync()!);
-  Map<String, dynamic> nomeNota = {'nome': nome, 'nota': nota, 'nota1': nota1};
-  notas.add(nomeNota);
-  menu();
-
-  //print("Digite a nota a ser adicionada:");
-  //double? nota = double.tryParse(stdin.readLineSync() ?? "");
-  //notas.add(nota!);
-
-  /*print(
-    "Nota $nota adicionada! Digite 1 para adicionar mais notas ou qualquer outra tecla para retorar ao menu principal:",
-  );
-  String? opcao = stdin.readLineSync();
-  if (opcao == "1") {
-    adiconar();
+  if (notas.containsKey(nome)) {
+    print(
+      "\nO nome $nome já consta na base de dados. Digite 1 para incluir outro nome ou qualquer tecla para voltar ao menu inicial.",
+    );
+    String? opcao = stdin.readLineSync();
+    if (opcao == "1") {
+      incluir();
+    } else {
+      menu();
+    }
   } else {
-    menu();
-  }*/
+    notas.putIfAbsent(nome!, () => []);
+    print(
+      "\n$nome adicionado com sucesso. Digite 1 para incluir outro nome ou qualquer tecla para voltar ao menu inicial.",
+    );
+    String? opcao = stdin.readLineSync();
+    if (opcao == "1") {
+      incluir();
+    } else {
+      menu();
+    }
+  }
+}
+
+void adiconar() {
+  print("\nDigite o nome do(a) aluno(a):");
+  String? nome = stdin.readLineSync();
+  if (notas.containsKey(nome)) {
+    print("\nDigite a nota:");
+    int? nota = int.tryParse(stdin.readLineSync()!);
+    notas[nome]?.add(nota!);
+    print(
+      "\nA nota $nota foi atribuida ao aluno $nome. Digite 1 para incluir outra nota para $nome, digite 2 para incluir nota para outro aluno ou qualquer tecla para voltar ao menu inicial.",
+    );
+    String? opcao = stdin.readLineSync();
+    if (opcao == "1") {}
+  }
+  print("\nDigite a nota do(a) aluno(a):");
+  int? nota = int.parse(stdin.readLineSync()!);
+  notas.putIfAbsent(nome!, () => []);
+  notas[nome]!.add(nota);
+  print(notas);
+  menu();
 }
 
 void consultar() {
@@ -67,10 +91,7 @@ void consultar() {
       sair();
     }
   } else {
-    print("\nNotas:\n");
-    for (var i = 0; i < notas.length; i++) {
-      print(notas[i]);
-    }
+    print(notas);
     print(
       "\nDigite 1 para voltar ao menu inicial ou qualquer outra tecla para sair:",
     );
