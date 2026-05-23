@@ -62,21 +62,32 @@ void adiconar() {
   print("\nDigite o nome do(a) aluno(a):");
   String? nome = stdin.readLineSync();
   if (notas.containsKey(nome)) {
-    print("\nDigite a nota:");
-    int? nota = int.tryParse(stdin.readLineSync()!);
-    notas[nome]?.add(nota!);
+    String opcao = "1";
+    while (opcao == "1") {
+      print("\nDigite a nota:");
+      int? nota = int.tryParse(stdin.readLineSync()!);
+      notas[nome]?.add(nota!);
+      print(
+        "\nA nota $nota foi atribuida ao aluno $nome. Digite 1 para incluir outra nota para $nome, digite 2 para incluir nota para outro aluno ou qualquer tecla para voltar ao menu inicial.",
+      );
+      opcao = stdin.readLineSync()!;
+      if (opcao == "2") {
+        adiconar();
+      } else if (opcao != "1") {
+        menu();
+      }
+    }
+  } else {
     print(
-      "\nA nota $nota foi atribuida ao aluno $nome. Digite 1 para incluir outra nota para $nome, digite 2 para incluir nota para outro aluno ou qualquer tecla para voltar ao menu inicial.",
+      "Aluno não localizado. Digite 1 para tentar novamente ou qualquer tecla para voltar ao menu inicial",
     );
     String? opcao = stdin.readLineSync();
-    if (opcao == "1") {}
+    if (opcao == "1") {
+      adiconar();
+    } else {
+      menu();
+    }
   }
-  print("\nDigite a nota do(a) aluno(a):");
-  int? nota = int.parse(stdin.readLineSync()!);
-  notas.putIfAbsent(nome!, () => []);
-  notas[nome]!.add(nota);
-  print(notas);
-  menu();
 }
 
 void consultar() {
@@ -91,16 +102,12 @@ void consultar() {
       sair();
     }
   } else {
-    print(notas);
-    print(
-      "\nDigite 1 para voltar ao menu inicial ou qualquer outra tecla para sair:",
-    );
-    String? opcao = stdin.readLineSync();
-    if (opcao == "1") {
-      menu();
-    } else {
-      sair();
-    }
+    notas.forEach((nome, notas) {
+      print("\nAluno: $nome");
+      for (int i = 0; i < notas.length; i++) {
+        print("Nota: ${i + 1}: ${notas[i]}");
+      }
+    });
   }
 }
 
