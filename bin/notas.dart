@@ -5,11 +5,14 @@ void main() {
   menu();
 }
 
-Map<String, List<int>> notas = {};
+Map<String, List<double>> notas = {
+  'Icaro': [8.50, 10, 7.5, 8],
+  'Maria': [9.50, 9, 6.5, 10],
+};
 
 void menu() {
   print(
-    "\nMenu Principal\n\n1 - Incluir Aluno\n2 - Adiconar nota\n3 - Consultar alunos e notas\n4 - Excluir Nota\n5 - Sair",
+    "\nMenu Principal\n\n1 - Incluir Aluno\n2 - Adiconar Nota\n3 - Consultar Alunos e Notas\n4 - Excluir Notas\n5 - Sair",
   );
   String? opcao = stdin.readLineSync();
   switch (opcao) {
@@ -65,7 +68,7 @@ void adiconar() {
     String opcao = "1";
     while (opcao == "1") {
       print("\nDigite a nota:");
-      int? nota = int.tryParse(stdin.readLineSync()!);
+      double? nota = double.tryParse(stdin.readLineSync()!);
       notas[nome]?.add(nota!);
       print(
         "\nA nota $nota foi atribuida ao aluno $nome. Digite 1 para incluir outra nota para $nome, digite 2 para incluir nota para outro aluno ou qualquer tecla para voltar ao menu inicial.",
@@ -105,29 +108,40 @@ void consultar() {
     notas.forEach((nome, notas) {
       print("\nAluno: $nome");
       for (int i = 0; i < notas.length; i++) {
-        print("Nota: ${i + 1}: ${notas[i]}");
+        print("Nota ${i + 1}: ${notas[i]}");
       }
     });
   }
+  print("\nDigite qualquer tecla para voltar ao menu inicial\n");
+  stdin.readLineSync();
+  menu();
 }
 
 void excluir() {
-  print("\nDigite o valor correspondente a nota a ser excluída:\n");
-  List<int> opcoes = [];
-  for (var i = 0; i < notas.length; i++) {
-    int index = i + 1;
-    print("Nota $index: ${notas[i]}");
-    opcoes.add(index);
-  }
-  int? opcao = int.tryParse(stdin.readLineSync() ?? "");
-  if (opcoes.contains(opcao)) {
-    // notas.removeAt(opcao! - 1);
+  print("\nAlunos cadastrados:\n");
+  notas.forEach((nome, notas) {
+    print(nome);
+  });
+  print("\nDigite o nome do aluno que terá a nota excluída:\n");
+  String? nome = stdin.readLineSync();
+  if (notas.containsKey(nome)) {
+    for (int i = 0; i < notas[nome]!.length; i++) {
+      print("Nota ${i + 1}: ${notas[nome]![i]}");
+    }
+    print("\nDigite o número de referência da nota a ser excluída:");
+    int? opcao = int.tryParse(stdin.readLineSync()!);
+    notas[nome]!.removeAt(opcao! - 1);
+    print(
+      "\nNota excluída com sucesso! Segue abaixo nota(s) atualizada(s) do(a) Aluno(a) $nome:\n",
+    );
+    for (int i = 0; i < notas[nome]!.length; i++) {
+      print("Nota ${i + 1}: ${notas[nome]![i]}");
+    }
   } else {
-    print("Opção inválida.");
-    excluir();
+    print(
+      "Aluno(a) não localizado, verifique a lista abaixo e tente novamente:",
+    );
   }
-
-  menu();
 }
 
 void sair() {
